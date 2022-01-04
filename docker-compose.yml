@@ -1,0 +1,17 @@
+version: "1.0"
+services:
+        backend:
+                build: /home/shashwatmishra/sites/site1
+                network_mode: "host"
+                depends_on:
+                        - db
+                environment:
+                        - DB_PASS=abc123
+                        - DB_HOST=localhost
+                        - DB_USER=root
+        db:
+                image: mysql:latest
+                ports:
+                        - "3306:3306"
+                volumes:
+                        - /home/shashwatmishra/docker_data/mysql:/var/lib/mysql

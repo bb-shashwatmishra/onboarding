@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node
+  labels:
+    app: node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+      - name: node
+        image: bbshashwatmishra/documents_backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+          - name: DB_HOST
+            value: mysql-service
+          - name: DB_USER
+            value: "test"
+          - name: DB_PASS
+            value: "abc123"
+        resources:
+          limits:
+            cpu: 200m
+          requests:
+            cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-service
+spec:
+  selector:
+    app: node
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 81
+      targetPort: 8080
+      nodePort: 30001
